@@ -21,13 +21,13 @@
             
             <div class="form-group">
                 <input type="text" class="form-control" id="login" name="login" 
-                       placeholder="Usuario o Email" value="<?= old('login') ?>" required>
+                    placeholder="Usuario o Email" value="<?= old('login') ?>" required>
                 <i class="fas fa-user input-icon"></i>
             </div>
 
             <div class="form-group">
                 <input type="password" class="form-control" id="password" name="password" 
-                       placeholder="Contraseña" required>
+                    placeholder="Contraseña" required>
                 <i class="fas fa-lock input-icon"></i>
             </div>
 
