@@ -141,13 +141,34 @@ class Equipos extends BaseController
     {
         // Validaciones básicas
         $rules = [
-            'idusuario' => 'required|integer',
-            'descripcion' => 'required|min_length[10]',
-            'estadoservicio' => 'required|in_list[Pendiente,En Proceso,Completado,Programado]'
+            'idusuario' => [
+                'rules' => 'required|integer',
+                'errors' => [
+                    'required' => 'Debe seleccionar un usuario/técnico.',
+                    'integer' => 'El identificador del usuario es inválido.'
+                ]
+            ],
+            'descripcion' => [
+                'rules' => 'required|min_length[5]',
+                'errors' => [
+                    'required' => 'La descripción del equipo es obligatoria.',
+                    'min_length' => 'La descripción debe tener al menos 5 caracteres.'
+                ]
+            ],
+            'estadoservicio' => [
+                'rules' => 'required|in_list[Planificación,Producción,Postproducción,Finalizado]',
+                'errors' => [
+                    'required' => 'Debe seleccionar la fase del servicio.',
+                    'in_list' => 'La fase seleccionada no es válida.'
+                ]
+            ]
         ];
 
         if (!$this->validate($rules)) {
-            $error = 'Por favor complete correctamente todos los campos.';
+            $validationErrors = $this->validator ? $this->validator->getErrors() : [];
+            $error = !empty($validationErrors)
+                ? implode(' ', $validationErrors)
+                : 'Por favor complete correctamente todos los campos.';
             
             // Si es AJAX, devolver JSON
             if ($this->request->isAJAX()) {

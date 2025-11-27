@@ -157,7 +157,7 @@ CREATE TABLE equipos (
     idserviciocontratado INT,
     idusuario INT,
     descripcion VARCHAR(200),
-    estadoservicio ENUM('Pendiente','En Proceso','Completado','Programado') DEFAULT 'Pendiente',
+    estadoservicio ENUM('Planificación','Producción','Postproducción','Finalizado','Vencido') DEFAULT 'Planificación',
     fecha_asignacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_equipo_servicio FOREIGN KEY (idserviciocontratado) REFERENCES servicioscontratados(idserviciocontratado),
     CONSTRAINT fk_equipo_usuario FOREIGN KEY (idusuario) REFERENCES usuarios(idusuario)
@@ -351,20 +351,18 @@ INSERT INTO servicios (servicio, descripcion, precioregular, idcategoria) VALUES
 
 -- 6. COTIZACIONES
 INSERT INTO cotizaciones (idcliente, idtipocontrato, idusuariocrea, fechacotizacion, fechaevento, idtipoevento) VALUES 
--- Noviembre 2025
-(1, 1, 2, '2025-10-30', '2025-11-15', 1),
-(2, 1, 2, '2025-10-30', '2025-11-08', 2),
-(3, 4, 1, '2025-10-31', '2025-11-20', 3),
-(4, 1, 2, '2025-11-01', '2025-11-22', 1),
-(6, 1, 2, '2025-11-02', '2025-11-25', 1),
-(7, 1, 6, '2025-11-03', '2025-11-28', 1),
-
--- Diciembre 2025
-(8, 1, 6, '2025-11-04', '2025-12-05', 2),
-(9, 3, 1, '2025-11-05', '2025-12-10', 4),
-(10, 1, 2, '2025-11-06', '2025-12-14', 2),
-(11, 4, 1, '2025-11-07', '2025-12-20', 3),
-(11, 1, 2, '2025-11-08', '2025-12-14', 2);
+-- Fechas dentro del rango 27/11/2025 - 31/12/2025
+(1, 1, 2, '2025-11-27', '2025-12-01', 1),
+(2, 1, 2, '2025-11-28', '2025-12-02', 2),
+(3, 4, 1, '2025-11-29', '2025-12-03', 3),
+(4, 1, 2, '2025-11-30', '2025-12-04', 1),
+(6, 1, 2, '2025-12-01', '2025-12-05', 1),
+(7, 1, 6, '2025-12-02', '2025-12-06', 1),
+(8, 1, 6, '2025-12-03', '2025-12-07', 2),
+(9, 3, 1, '2025-12-04', '2025-12-08', 4),
+(10, 1, 2, '2025-12-05', '2025-12-09', 2),
+(11, 4, 1, '2025-12-06', '2025-12-10', 3),
+(11, 1, 2, '2025-12-07', '2025-12-11', 2);
 
 -- 7. CONTRATOS
 INSERT INTO contratos (idcotizacion, idcliente, autorizapublicacion) VALUES 
@@ -374,123 +372,123 @@ INSERT INTO contratos (idcotizacion, idcliente, autorizapublicacion) VALUES
 -- 8. SERVICIOS CONTRATADOS
 INSERT INTO servicioscontratados (idcotizacion, idservicio, cantidad, precio, fechahoraservicio, direccion) VALUES 
 -- Cotización 1: Matrimonio Rosa Quispe (Nov 15)
-(1, 2, 1, 1200.00, '2025-11-15 15:00:00', 'Hacienda El Olivar, Panamericana Sur Km 197, El Carmen - Chincha'),
-(1, 6, 1, 1800.00, '2025-11-15 14:00:00', 'Hacienda El Olivar, Panamericana Sur Km 197, El Carmen - Chincha'),
-(1, 11, 1, 950.00, '2025-11-15 14:30:00', 'Hacienda El Olivar, Panamericana Sur Km 197, El Carmen - Chincha'),
-(1, 14, 1, 1200.00, '2025-11-15 13:00:00', 'Hacienda El Olivar, Panamericana Sur Km 197, El Carmen - Chincha'),
-(1, 18, 1, 2800.00, '2025-11-15 18:00:00', 'Hacienda El Olivar, Panamericana Sur Km 197, El Carmen - Chincha'),
-(1, 22, 1, 650.00, '2025-11-15 20:00:00', 'Hacienda El Olivar, Panamericana Sur Km 197, El Carmen - Chincha'),
+(1, 2, 1, 1200.00, '2025-12-01 15:00:00', 'Hacienda El Olivar, Panamericana Sur Km 197, El Carmen - Chincha'),
+(1, 6, 1, 1800.00, '2025-12-01 14:00:00', 'Hacienda El Olivar, Panamericana Sur Km 197, El Carmen - Chincha'),
+(1, 11, 1, 950.00, '2025-12-01 14:30:00', 'Hacienda El Olivar, Panamericana Sur Km 197, El Carmen - Chincha'),
+(1, 14, 1, 1200.00, '2025-12-01 13:00:00', 'Hacienda El Olivar, Panamericana Sur Km 197, El Carmen - Chincha'),
+(1, 18, 1, 2800.00, '2025-12-01 18:00:00', 'Hacienda El Olivar, Panamericana Sur Km 197, El Carmen - Chincha'),
+(1, 22, 1, 650.00, '2025-12-01 20:00:00', 'Hacienda El Olivar, Panamericana Sur Km 197, El Carmen - Chincha'),
 
 -- Cotización 2: Quinceañero Carlos Torres (Nov 08)
-(2, 1, 1, 450.00, '2025-11-08 18:00:00', 'Salón Santa María, Av. Óscar R. Benavides 320, Chincha Alta'),
-(2, 5, 1, 850.00, '2025-11-08 17:30:00', 'Salón Santa María, Av. Óscar R. Benavides 320, Chincha Alta'),
-(2, 10, 1, 400.00, '2025-11-08 17:00:00', 'Salón Santa María, Av. Óscar R. Benavides 320, Chincha Alta'),
-(2, 17, 1, 1750.00, '2025-11-08 19:30:00', 'Salón Santa María, Av. Óscar R. Benavides 320, Chincha Alta'),
-(2, 22, 1, 650.00, '2025-11-08 20:00:00', 'Salón Santa María, Av. Óscar R. Benavides 320, Chincha Alta'),
+(2, 1, 1, 450.00, '2025-12-02 18:00:00', 'Salón Santa María, Av. Óscar R. Benavides 320, Chincha Alta'),
+(2, 5, 1, 850.00, '2025-12-02 17:30:00', 'Salón Santa María, Av. Óscar R. Benavides 320, Chincha Alta'),
+(2, 10, 1, 400.00, '2025-12-02 17:00:00', 'Salón Santa María, Av. Óscar R. Benavides 320, Chincha Alta'),
+(2, 17, 1, 1750.00, '2025-12-02 19:30:00', 'Salón Santa María, Av. Óscar R. Benavides 320, Chincha Alta'),
+(2, 22, 1, 650.00, '2025-12-02 20:00:00', 'Salón Santa María, Av. Óscar R. Benavides 320, Chincha Alta'),
 
 -- Cotización 3: Evento Corporativo (Nov 20)
-(3, 3, 1, 800.00, '2025-11-20 09:00:00', 'Centro Empresarial Chincha, Av. Ramón Marín 180, Chincha Alta'),
-(3, 8, 1, 1500.00, '2025-11-20 08:30:00', 'Centro Empresarial Chincha, Av. Ramón Marín 180, Chincha Alta'),
-(3, 12, 1, 750.00, '2025-11-20 08:45:00', 'Centro Empresarial Chincha, Av. Ramón Marín 180, Chincha Alta'),
-(3, 17, 1, 3500.00, '2025-11-20 12:00:00', 'Centro Empresarial Chincha, Av. Ramón Marín 180, Chincha Alta'),
+(3, 3, 1, 800.00, '2025-12-03 09:00:00', 'Centro Empresarial Chincha, Av. Ramón Marín 180, Chincha Alta'),
+(3, 8, 1, 1500.00, '2025-12-03 08:30:00', 'Centro Empresarial Chincha, Av. Ramón Marín 180, Chincha Alta'),
+(3, 12, 1, 750.00, '2025-12-03 08:45:00', 'Centro Empresarial Chincha, Av. Ramón Marín 180, Chincha Alta'),
+(3, 17, 1, 3500.00, '2025-12-03 12:00:00', 'Centro Empresarial Chincha, Av. Ramón Marín 180, Chincha Alta'),
 
 -- Cotización 4: Matrimonio José Tasayco (Nov 22)
-(4, 4, 1, 350.00, '2025-11-22 17:00:00', 'Calle Los Algarrobos 234, Pueblo Nuevo, Chincha Alta'),
-(4, 5, 1, 850.00, '2025-11-22 16:30:00', 'Calle Los Algarrobos 234, Pueblo Nuevo, Chincha Alta'),
-(4, 15, 1, 380.00, '2025-11-22 16:00:00', 'Calle Los Algarrobos 234, Pueblo Nuevo, Chincha Alta'),
-(4, 19, 1, 280.00, '2025-11-22 19:00:00', 'Calle Los Algarrobos 234, Pueblo Nuevo, Chincha Alta'),
+(4, 4, 1, 350.00, '2025-12-04 17:00:00', 'Calle Los Algarrobos 234, Pueblo Nuevo, Chincha Alta'),
+(4, 5, 1, 850.00, '2025-12-04 16:30:00', 'Calle Los Algarrobos 234, Pueblo Nuevo, Chincha Alta'),
+(4, 15, 1, 380.00, '2025-12-04 16:00:00', 'Calle Los Algarrobos 234, Pueblo Nuevo, Chincha Alta'),
+(4, 19, 1, 280.00, '2025-12-04 19:00:00', 'Calle Los Algarrobos 234, Pueblo Nuevo, Chincha Alta'),
 
 -- Cotización 5: Matrimonio Ana Munaico (Nov 25)
-(5, 1, 1, 450.00, '2025-11-25 11:00:00', 'Iglesia Santo Domingo, Plaza de Armas, Chincha Alta'),
-(5, 5, 1, 850.00, '2025-11-25 10:30:00', 'Iglesia Santo Domingo, Plaza de Armas, Chincha Alta'),
-(5, 13, 1, 550.00, '2025-11-25 10:00:00', 'Iglesia Santo Domingo, Plaza de Armas, Chincha Alta'),
-(5, 17, 1, 1400.00, '2025-11-25 13:00:00', 'Plaza de Armas, Chincha Alta'),
+(5, 1, 1, 450.00, '2025-12-05 11:00:00', 'Iglesia Santo Domingo, Plaza de Armas, Chincha Alta'),
+(5, 5, 1, 850.00, '2025-12-05 10:30:00', 'Iglesia Santo Domingo, Plaza de Armas, Chincha Alta'),
+(5, 13, 1, 550.00, '2025-12-05 10:00:00', 'Iglesia Santo Domingo, Plaza de Armas, Chincha Alta'),
+(5, 17, 1, 1400.00, '2025-12-05 13:00:00', 'Plaza de Armas, Chincha Alta'),
 
 -- Cotización 6: Matrimonio María Chávez (Nov 28)
-(6, 2, 1, 1200.00, '2025-11-28 16:00:00', 'Hacienda San José, Fundo San José s/n, El Carmen - Chincha'),
-(6, 7, 1, 2200.00, '2025-11-28 15:30:00', 'Hacienda San José, Fundo San José s/n, El Carmen - Chincha'),
-(6, 11, 1, 950.00, '2025-11-28 15:00:00', 'Hacienda San José, Fundo San José s/n, El Carmen - Chincha'),
-(6, 18, 1, 2100.00, '2025-11-28 19:00:00', 'Hacienda San José, Fundo San José s/n, El Carmen - Chincha'),
-(6, 22, 1, 650.00, '2025-11-28 21:00:00', 'Hacienda San José, Fundo San José s/n, El Carmen - Chincha'),
+(6, 2, 1, 1200.00, '2025-12-06 16:00:00', 'Hacienda San José, Fundo San José s/n, El Carmen - Chincha'),
+(6, 7, 1, 2200.00, '2025-12-06 15:30:00', 'Hacienda San José, Fundo San José s/n, El Carmen - Chincha'),
+(6, 11, 1, 950.00, '2025-12-06 15:00:00', 'Hacienda San José, Fundo San José s/n, El Carmen - Chincha'),
+(6, 18, 1, 2100.00, '2025-12-06 19:00:00', 'Hacienda San José, Fundo San José s/n, El Carmen - Chincha'),
+(6, 22, 1, 650.00, '2025-12-06 21:00:00', 'Hacienda San José, Fundo San José s/n, El Carmen - Chincha'),
 
 -- Cotización 7: Quinceañero Juan Ramírez (Nov 30)
-(7, 1, 1, 450.00, '2025-11-30 18:00:00', 'Salón Los Jardines de Chincha, Av. Luis Massaro 560, Chincha Alta'),
-(7, 5, 1, 850.00, '2025-11-30 17:30:00', 'Salón Los Jardines de Chincha, Av. Luis Massaro 560, Chincha Alta'),
-(7, 10, 1, 400.00, '2025-11-30 17:00:00', 'Salón Los Jardines de Chincha, Av. Luis Massaro 560, Chincha Alta'),
-(7, 17, 1, 1225.00, '2025-11-30 20:00:00', 'Salón Los Jardines de Chincha, Av. Luis Massaro 560, Chincha Alta'),
+(7, 1, 1, 450.00, '2025-12-07 18:00:00', 'Salón Los Jardines de Chincha, Av. Luis Massaro 560, Chincha Alta'),
+(7, 5, 1, 850.00, '2025-12-07 17:30:00', 'Salón Los Jardines de Chincha, Av. Luis Massaro 560, Chincha Alta'),
+(7, 10, 1, 400.00, '2025-12-07 17:00:00', 'Salón Los Jardines de Chincha, Av. Luis Massaro 560, Chincha Alta'),
+(7, 17, 1, 1225.00, '2025-12-07 20:00:00', 'Salón Los Jardines de Chincha, Av. Luis Massaro 560, Chincha Alta'),
 
 -- Cotización 8: Quinceañero (Dic 05)
-(8, 1, 1, 450.00, '2025-12-05 18:00:00', 'Centro de Convenciones Chincha, Av. Progreso 980, Pueblo Nuevo, Chincha Alta'),
-(8, 5, 1, 850.00, '2025-12-05 17:30:00', 'Centro de Convenciones Chincha, Av. Progreso 980, Pueblo Nuevo, Chincha Alta'),
-(8, 10, 1, 400.00, '2025-12-05 17:00:00', 'Centro de Convenciones Chincha, Av. Progreso 980, Pueblo Nuevo, Chincha Alta'),
-(8, 17, 1, 1750.00, '2025-12-05 20:00:00', 'Centro de Convenciones Chincha, Av. Progreso 980, Pueblo Nuevo, Chincha Alta'),
+(8, 1, 1, 450.00, '2025-12-08 18:00:00', 'Centro de Convenciones Chincha, Av. Progreso 980, Pueblo Nuevo, Chincha Alta'),
+(8, 5, 1, 850.00, '2025-12-08 17:30:00', 'Centro de Convenciones Chincha, Av. Progreso 980, Pueblo Nuevo, Chincha Alta'),
+(8, 10, 1, 400.00, '2025-12-08 17:00:00', 'Centro de Convenciones Chincha, Av. Progreso 980, Pueblo Nuevo, Chincha Alta'),
+(8, 17, 1, 1750.00, '2025-12-08 20:00:00', 'Centro de Convenciones Chincha, Av. Progreso 980, Pueblo Nuevo, Chincha Alta'),
 
 -- Cotización 9: Conferencia Empresa (Dic 10)
-(9, 3, 1, 1600.00, '2025-12-10 09:00:00', 'Hotel La Estación, Jr. Lima 540, Chincha Alta'),
-(9, 8, 1, 1500.00, '2025-12-10 08:30:00', 'Hotel La Estación, Jr. Lima 540, Chincha Alta'),
-(9, 12, 1, 750.00, '2025-12-10 08:45:00', 'Hotel La Estación, Jr. Lima 540, Chincha Alta'),
+(9, 3, 1, 1600.00, '2025-12-09 09:00:00', 'Hotel La Estación, Jr. Lima 540, Chincha Alta'),
+(9, 8, 1, 1500.00, '2025-12-09 08:30:00', 'Hotel La Estación, Jr. Lima 540, Chincha Alta'),
+(9, 12, 1, 750.00, '2025-12-09 08:45:00', 'Hotel La Estación, Jr. Lima 540, Chincha Alta'),
 
 -- Cotización 10: Evento Corporativo (Dic 20)
-(10, 3, 1, 800.00, '2025-12-20 09:00:00', 'Centro Empresarial Chincha Sur, Calle Comercio 120, Chincha Alta'),
-(10, 8, 1, 1500.00, '2025-12-20 08:30:00', 'Centro Empresarial Chincha Sur, Calle Comercio 120, Chincha Alta'),
-(10, 12, 1, 750.00, '2025-12-20 08:45:00', 'Centro Empresarial Chincha Sur, Calle Comercio 120, Chincha Alta'),
+(10, 3, 1, 800.00, '2025-12-10 09:00:00', 'Centro Empresarial Chincha Sur, Calle Comercio 120, Chincha Alta'),
+(10, 8, 1, 1500.00, '2025-12-10 08:30:00', 'Centro Empresarial Chincha Sur, Calle Comercio 120, Chincha Alta'),
+(10, 12, 1, 750.00, '2025-12-10 08:45:00', 'Centro Empresarial Chincha Sur, Calle Comercio 120, Chincha Alta'),
 
 -- Cotización 11: Quinceañero (Dic 14)  
-(11, 2, 1, 1200.00, '2025-12-14 18:00:00', 'Country Club Chincha, Av. Luis Massaro 600, Chincha Alta'),
-(11, 6, 1, 1800.00, '2025-12-14 17:30:00', 'Country Club Chincha, Av. Luis Massaro 600, Chincha Alta'),
-(11, 11, 1, 950.00, '2025-12-14 17:00:00', 'Country Club Chincha, Av. Luis Massaro 600, Chincha Alta');
+(11, 2, 1, 1200.00, '2025-12-11 18:00:00', 'Country Club Chincha, Av. Luis Massaro 600, Chincha Alta'),
+(11, 6, 1, 1800.00, '2025-12-11 17:30:00', 'Country Club Chincha, Av. Luis Massaro 600, Chincha Alta'),
+(11, 11, 1, 950.00, '2025-12-11 17:00:00', 'Country Club Chincha, Av. Luis Massaro 600, Chincha Alta');
 
 -- 9. CONTROL DE PAGOS
 INSERT INTO controlpagos (idcontrato, saldo, amortizacion, deuda, idtipopago, numtransaccion, fechahora, idusuario) VALUES 
 -- Contrato 1 (Boda Carlos - Total: 2800) - COMPLETAMENTE PAGADO
-(1, 2800.00, 1400.00, 1400.00, 2, 'TXN20240120001', '2025-01-20 10:30:00', 1),
-(1, 1400.00, 1400.00, 0.00, 2, 'TXN20240210001', '2025-02-10 14:15:00', 1),
+(1, 2800.00, 1400.00, 1400.00, 2, 'TXN20240120001', '2025-11-29 10:30:00', 1),
+(1, 1400.00, 1400.00, 0.00, 2, 'TXN20240210001', '2025-12-05 14:15:00', 1),
 
 -- Contrato 2 (Quinceañero María - Total: 1400) - COMPLETAMENTE PAGADO
-(2, 1400.00, 700.00, 700.00, 1, 'EFE20240125001', '2025-01-25 16:45:00', 2),
-(2, 700.00, 700.00, 0.00, 2, 'TXN20240215001', '2025-02-15 11:20:00', 2),
+(2, 1400.00, 700.00, 700.00, 1, 'EFE20240125001', '2025-11-30 16:45:00', 2),
+(2, 700.00, 700.00, 0.00, 2, 'TXN20240215001', '2025-12-06 11:20:00', 2),
 
 -- Contrato 3 (Evento Corporativo - Total: 2500) - COMPLETAMENTE PAGADO
-(3, 2500.00, 1250.00, 1250.00, 2, 'TXN20240201001', '2025-02-01 09:20:00', 1),
-(3, 1250.00, 1250.00, 0.00, 2, 'TXN20240225001', '2025-02-25 11:10:00', 1),
+(3, 2500.00, 1250.00, 1250.00, 2, 'TXN20240201001', '2025-12-01 09:20:00', 1),
+(3, 1250.00, 1250.00, 0.00, 2, 'TXN20240225001', '2025-12-07 11:10:00', 1),
 
 -- Contrato 4 (Boda José - Total: 1200) - PAGADO PARCIALMENTE
-(4, 1200.00, 600.00, 600.00, 5, 'YAPE20240205001', '2025-02-05 13:25:00', 2),
+(4, 1200.00, 600.00, 600.00, 5, 'YAPE20240205001', '2025-12-02 13:25:00', 2),
 
 -- Contrato 5 (Conferencia - Total: 4000) - PAGADO PARCIALMENTE (DEBE 3000)
-(5, 4000.00, 1000.00, 3000.00, 3, 'TC20240208001', '2025-02-08 15:40:00', 1),
+(5, 4000.00, 1000.00, 3000.00, 3, 'TC20240208001', '2025-12-03 15:40:00', 1),
 
 -- Contrato 6 (Boda Ana - Total: 1150) - PAGADO PARCIALMENTE
-(6, 1150.00, 575.00, 575.00, 2, 'TXN20240212001', '2025-02-12 11:20:00', 3),
+(6, 1150.00, 575.00, 575.00, 2, 'TXN20240212001', '2025-12-04 11:20:00', 3),
 
 -- Contrato 7 (Evento Robert - Total: 2250) - PAGADO PARCIALMENTE
-(7, 2250.00, 1125.00, 1125.00, 3, 'TC20240214001', '2025-02-14 16:30:00', 4);
+(7, 2250.00, 1125.00, 1125.00, 3, 'TC20240214001', '2025-12-05 16:30:00', 4);
 
 -- 10. EQUIPOS
 INSERT INTO equipos (idserviciocontratado, idusuario, descripcion, estadoservicio) VALUES 
 -- Servicios de cotización 1 (Matrimonio Rosa Quispe - Nov 15)
-(1, 3, 'Equipo de sonido: mezcladora Allen & Heath, micrófonos inalámbricos, parlantes JBL', 'Completado'),
-(2, 4, 'Cobertura fotográfica: Canon EOS R5, lentes 24-70mm, flash Godox', 'Completado'),
+(1, 3, 'Equipo de sonido: mezcladora Allen & Heath, micrófonos inalámbricos, parlantes JBL', 'Finalizado'),
+(2, 4, 'Cobertura fotográfica: Canon EOS R5, lentes 24-70mm, flash Godox', 'Finalizado'),
 
 -- Servicios de cotización 2 (Quinceañero Carlos Torres - Nov 08)
-(7, 3, 'Sistema de audio: consola digital, micrófonos de corbata, parlantes activos', 'En Proceso'),
-(8, 1, 'Luces LED decorativas: panel RGB, controlador DMX, efectos laser', 'Pendiente'),
+(7, 3, 'Sistema de audio: consola digital, micrófonos de corbata, parlantes activos', 'Producción'),
+(8, 1, 'Luces LED decorativas: panel RGB, controlador DMX, efectos laser', 'Planificación'),
 
 -- Servicios de cotización 3 (Evento Corporativo - Nov 20)
-(12, 2, 'Transmisión en vivo: cámaras 4K, encoder, plataforma streaming', 'Completado'),
-(13, 4, 'Fotografía corporativa: retratos ejecutivos, cobertura de presentaciones', 'Completado'),
+(12, 2, 'Transmisión en vivo: cámaras 4K, encoder, plataforma streaming', 'Finalizado'),
+(13, 4, 'Fotografía corporativa: retratos ejecutivos, cobertura de presentaciones', 'Finalizado'),
 
 -- Servicios de cotización 4 (Matrimonio José Tasayco - Nov 22)
-(16, 3, 'Audio para ceremonia: sistema inalámbrico, altavoces discretos', 'Pendiente'),
-(17, 1, 'DJ profesional: controlador Pioneer, biblioteca musical, micrófonos', 'Pendiente'),
+(16, 3, 'Audio para ceremonia: sistema inalámbrico, altavoces discretos', 'Planificación'),
+(17, 1, 'DJ profesional: controlador Pioneer, biblioteca musical, micrófonos', 'Planificación'),
 
 -- Servicios de cotización 6 (Matrimonio María Chávez - Nov 28)
-(24, 3, 'Sistema de sonido para ceremonia exterior', 'Pendiente'),
-(25, 2, 'Servicio de catering premium', 'Pendiente'),
+(24, 3, 'Sistema de sonido para ceremonia exterior', 'Planificación'),
+(25, 2, 'Servicio de catering premium', 'Planificación'),
 
 -- Servicios de cotización 7 (Quinceañero Juan Ramírez - Nov 30)
-(29, 4, 'Fotografía de eventos', 'Programado'),
-(30, 3, 'Sistema de sonido para evento', 'Programado');
+(29, 4, 'Fotografía de eventos', 'Planificación'),
+(30, 3, 'Sistema de sonido para evento', 'Planificación');
 
 -- 11. LISTA DE CONDICIONES
 INSERT INTO listacondiciones (idcondicion, idtipocontrato) VALUES 

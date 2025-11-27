@@ -27,12 +27,13 @@ class ProyectoModel extends Model
                 END as cliente,
                 sc.fechahoraservicio,
                 sc.direccion,
-                COALESCE(eq.estadoservicio, 'Pendiente') as estado,
+                COALESCE(eq.estadoservicio, 'Planificación') as estado,
                 CASE 
-                    WHEN COALESCE(eq.estadoservicio, 'Pendiente') = 'Completado' THEN 100
-                    WHEN COALESCE(eq.estadoservicio, 'Pendiente') = 'En Proceso' THEN 65
-                    WHEN COALESCE(eq.estadoservicio, 'Pendiente') = 'Programado' THEN 35
-                    ELSE 10
+                    WHEN COALESCE(eq.estadoservicio, 'Planificación') = 'Finalizado' THEN 100
+                    WHEN COALESCE(eq.estadoservicio, 'Planificación') = 'Postproducción' THEN 80
+                    WHEN COALESCE(eq.estadoservicio, 'Planificación') = 'Producción' THEN 55
+                    WHEN COALESCE(eq.estadoservicio, 'Planificación') = 'Vencido' THEN 0
+                    ELSE 20
                 END as progreso
             FROM servicioscontratados sc
             INNER JOIN cotizaciones cot ON sc.idcotizacion = cot.idcotizacion
@@ -76,12 +77,13 @@ class ProyectoModel extends Model
                 s.servicio,
                 sc.fechahoraservicio,
                 sc.direccion,
-                COALESCE(eq.estadoservicio, 'Pendiente') as estado,
+                COALESCE(eq.estadoservicio, 'Planificación') as estado,
                 CASE 
-                    WHEN COALESCE(eq.estadoservicio, 'Pendiente') = 'Completado' THEN 100
-                    WHEN COALESCE(eq.estadoservicio, 'Pendiente') = 'En Proceso' THEN 65
-                    WHEN COALESCE(eq.estadoservicio, 'Pendiente') = 'Programado' THEN 35
-                    ELSE 10
+                    WHEN COALESCE(eq.estadoservicio, 'Planificación') = 'Finalizado' THEN 100
+                    WHEN COALESCE(eq.estadoservicio, 'Planificación') = 'Postproducción' THEN 80
+                    WHEN COALESCE(eq.estadoservicio, 'Planificación') = 'Producción' THEN 55
+                    WHEN COALESCE(eq.estadoservicio, 'Planificación') = 'Vencido' THEN 0
+                    ELSE 20
                 END as progreso,
                 cot.fechaevento,
                 te.evento as tipoevento
@@ -209,7 +211,7 @@ class ProyectoModel extends Model
                 cot.fechaevento,
                 te.evento as tipoevento,
                 CASE 
-                    WHEN COALESCE(eq.estadoservicio, 'Pendiente') != 'Completado' 
+                    WHEN COALESCE(eq.estadoservicio, 'Planificación') NOT IN ('Finalizado', 'Vencido') 
                          AND sc.fechahoraservicio >= CURDATE() THEN 'Activo'
                     ELSE 'Inactivo'
                 END as estadoproyecto
@@ -281,12 +283,13 @@ class ProyectoModel extends Model
         return $this->db->query("
             SELECT 
                 COUNT(*) as total_proyectos,
-                SUM(CASE WHEN COALESCE(eq.estadoservicio, 'Pendiente') != 'Completado' 
+                SUM(CASE WHEN COALESCE(eq.estadoservicio, 'Planificación') NOT IN ('Finalizado', 'Vencido') 
                          AND sc.fechahoraservicio >= CURDATE() THEN 1 ELSE 0 END) as proyectos_activos,
-                SUM(CASE WHEN COALESCE(eq.estadoservicio, 'Pendiente') = 'Completado' THEN 1 ELSE 0 END) as proyectos_completados,
-                SUM(CASE WHEN COALESCE(eq.estadoservicio, 'Pendiente') = 'En Proceso' THEN 1 ELSE 0 END) as proyectos_en_proceso,
-                SUM(CASE WHEN COALESCE(eq.estadoservicio, 'Pendiente') = 'Programado' THEN 1 ELSE 0 END) as proyectos_programados,
-                SUM(CASE WHEN COALESCE(eq.estadoservicio, 'Pendiente') = 'Pendiente' THEN 1 ELSE 0 END) as proyectos_pendientes
+                SUM(CASE WHEN COALESCE(eq.estadoservicio, 'Planificación') = 'Finalizado' THEN 1 ELSE 0 END) as proyectos_finalizados,
+                SUM(CASE WHEN COALESCE(eq.estadoservicio, 'Planificación') = 'Postproducción' THEN 1 ELSE 0 END) as proyectos_postproduccion,
+                SUM(CASE WHEN COALESCE(eq.estadoservicio, 'Planificación') = 'Producción' THEN 1 ELSE 0 END) as proyectos_produccion,
+                SUM(CASE WHEN COALESCE(eq.estadoservicio, 'Planificación') = 'Planificación' THEN 1 ELSE 0 END) as proyectos_planificacion,
+                SUM(CASE WHEN COALESCE(eq.estadoservicio, 'Planificación') = 'Vencido' THEN 1 ELSE 0 END) as proyectos_vencidos
             FROM servicioscontratados sc
             INNER JOIN cotizaciones cot ON sc.idcotizacion = cot.idcotizacion
             INNER JOIN contratos con ON cot.idcotizacion = con.idcotizacion
@@ -327,7 +330,7 @@ class ProyectoModel extends Model
             INNER JOIN servicios s ON sc.idservicio = s.idservicio
             LEFT JOIN equipos eq ON sc.idserviciocontratado = eq.idserviciocontratado
             LEFT JOIN tipoeventos te ON cot.idtipoevento = te.idtipoevento
-            WHERE COALESCE(eq.estadoservicio, 'Pendiente') = ?
+            WHERE COALESCE(eq.estadoservicio, 'Planificación') = ?
             ORDER BY sc.fechahoraservicio ASC
         ", [$estado])->getResult();
     }

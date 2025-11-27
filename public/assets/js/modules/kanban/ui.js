@@ -88,30 +88,30 @@ const KanbanUI = {
 
     getStatusColor(status) {
         const colors = {
-            'Programado': 'secondary',
-            'Pendiente': 'warning',
-            'En Proceso': 'info',
-            'Completado': 'success'
+            'Planificación': '#7c3aed',
+            'Producción': '#3b82f6',
+            'Postproducción': '#f59e0b',
+            'Finalizado': '#10b981'
         };
-        return colors[status] || 'secondary';
+        return colors[status] || '#757575';
     },
 
     getStatusIcon(status) {
         const icons = {
-            'Programado': 'info',
-            'Pendiente': 'warning',
-            'En Proceso': 'info',
-            'Completado': 'success'
+            'Planificación': 'info',
+            'Producción': 'info',
+            'Postproducción': 'warning',
+            'Finalizado': 'success'
         };
         return icons[status] || 'question';
     },
 
     getStatusFontAwesome(status) {
         const icons = {
-            'Programado': 'fas fa-calendar-alt',
-            'Pendiente': 'fas fa-clock',
-            'En Proceso': 'fas fa-spinner',
-            'Completado': 'fas fa-check-circle'
+            'Planificación': 'fas fa-calendar-alt',
+            'Producción': 'fas fa-video',
+            'Postproducción': 'fas fa-magic',
+            'Finalizado': 'fas fa-check-circle'
         };
         return icons[status] || 'fas fa-question-circle';
     },

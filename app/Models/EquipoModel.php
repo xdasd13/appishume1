@@ -193,19 +193,22 @@ class EquipoModel extends Model
         }
 
         // Agrupar por estado para facilitar el renderizado
-        // Flujo: Programado → Pendiente → En Proceso → Completado
+        // Flujo: Planificación → Producción → Postproducción → Finalizado
         $agrupados = [
-            'Programado' => [],
-            'Pendiente' => [],
-            'En Proceso' => [],
-            'Completado' => []
+            'Planificación' => [],
+            'Producción' => [],
+            'Postproducción' => [],
+            'Finalizado' => []
         ];
 
         foreach ($equipos as $equipo) {
-            $estado = $equipo['estadoservicio'] ?? 'Pendiente';
+            $estado = $equipo['estadoservicio'] ?? 'Planificación';
             
             if (isset($agrupados[$estado])) {
                 $agrupados[$estado][] = $equipo;
+            } elseif ($estado !== 'Vencido') {
+                // En caso de tener estados no contemplados (ej. datos antiguos), mapearlos
+                $agrupados['Planificación'][] = $equipo;
             }
         }
 

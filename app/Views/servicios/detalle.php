@@ -198,22 +198,19 @@
                                             </td>
                                             <td>
                                                 <?php
-                                                $badge_class = [
-                                                    'Completado' => 'bg-success',
-                                                    'En Proceso' => 'bg-warning',
-                                                    'Pendiente' => 'bg-secondary',
-                                                    'Programado' => 'bg-info'
+                                                $estado = $equipo['estadoservicio'] ?? 'Planificación';
+                                                $estadoConfigs = [
+                                                    'Planificación' => ['color' => '#7c3aed', 'icon' => 'fa-route'],
+                                                    'Producción' => ['color' => '#3b82f6', 'icon' => 'fa-video'],
+                                                    'Postproducción' => ['color' => '#f59e0b', 'icon' => 'fa-pen-to-square'],
+                                                    'Finalizado' => ['color' => '#10b981', 'icon' => 'fa-check-circle'],
+                                                    'Vencido' => ['color' => '#ef4444', 'icon' => 'fa-triangle-exclamation']
                                                 ];
-                                                $icon_class = [
-                                                    'Completado' => 'fa-check-circle',
-                                                    'En Proceso' => 'fa-spinner',
-                                                    'Pendiente' => 'fa-clock',
-                                                    'Programado' => 'fa-calendar-check'
-                                                ];
+                                                $config = $estadoConfigs[$estado] ?? ['color' => '#6b7280', 'icon' => 'fa-circle-info'];
                                                 ?>
-                                                <span class="badge <?= $badge_class[$equipo['estadoservicio']] ?>">
-                                                    <i class="fas <?= $icon_class[$equipo['estadoservicio']] ?> me-1"></i>
-                                                    <?= $equipo['estadoservicio'] ?>
+                                                <span class="badge text-uppercase" style="background: <?= $config['color'] ?>; color: #fff;">
+                                                    <i class="fas <?= $config['icon'] ?> me-1"></i>
+                                                    <?= $estado ?>
                                                 </span>
                                             </td>
                                             <td>

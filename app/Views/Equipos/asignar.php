@@ -108,13 +108,13 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="estadoservicio" class="form-label">Estado del Servicio</label>
+                    <label for="estadoservicio" class="form-label">Fase del Servicio</label>
                     <select class="form-select" id="estadoservicio" name="estadoservicio" required>
-                        <option value="">Seleccionar estado</option>
-                        <option value="Programado" selected>Programado</option>
-                        <option value="En Proceso">En Proceso</option>
-                        <option value="Completado">Completado</option>
-                        <option value="Pendiente">Pendiente</option>
+                        <option value="">Seleccionar fase</option>
+                        <option value="Planificación" selected>Planificación</option>
+                        <option value="Producción">Producción</option>
+                        <option value="Postproducción">Postproducción</option>
+                        <option value="Finalizado">Finalizado</option>
                     </select>
                 </div>
             </div>

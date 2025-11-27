@@ -281,45 +281,34 @@
         line-height: 1;
     }
 
-    .badge-programado {
+    .badge-planificacion {
         background-color: #7c3aed;
-        color: var(--color-surface);
+        color: #ffffff;
         border: 1px solid #7c3aed;
     }
 
-    .badge-en-proceso {
+    .badge-produccion {
         background-color: #3b82f6;
         color: #ffffff;
-        border: #3b82f6;
+        border: 1px solid #3b82f6;
     }
 
-    .badge-completado {
-        background-color: #10b981;
-        color: #ffffff;
-        border: 1px solid #10b981;
-    }
-
-    .badge-pendiente {
+    .badge-postproduccion {
         background-color: #f59e0b;
         color: #ffffff;
         border: 1px solid #f59e0b;
     }
 
-    /* Buttons */
-    .btn {
-        display: inline-flex;
-        align-items: center;
-        gap: var(--spacing-sm);
-        padding: 8px 16px;
-        font-size: 12px;
-        font-weight: 600;
-        text-decoration: none;
-        border-radius: 999px;
-        border: 1px solid transparent;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        line-height: 1;
-        box-shadow: var(--shadow-sm);
+    .badge-finalizado {
+        background-color: #10b981;
+        color: #ffffff;
+        border: 1px solid #10b981;
+    }
+
+    .badge-vencido {
+        background-color: #ef4444;
+        color: #ffffff;
+        border: 1px solid #ef4444;
     }
 
     .btn-orange {

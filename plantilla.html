@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Comprobante de Pago</title>
+
+<style>
+    body {
+        font-family: "Helvetica", Arial, sans-serif;
+        font-size: 13px;
+        margin: 40px;
+        color: #222;
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .empresa {
+        font-size: 22px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .ruc {
+        font-size: 14px;
+        margin-top: 3px;
+    }
+
+    .documento-box {
+        border: 2px solid #000;
+        padding: 12px;
+        width: 250px;
+        margin: 10px auto;
+        text-align: center;
+    }
+
+    .documento-titulo {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .numero {
+        font-size: 18px;
+        margin-top: 5px;
+    }
+
+    .section {
+        margin-top: 22px;
+        border: 1px solid #ccc;
+        padding: 12px 15px;
+        border-radius: 4px;
+    }
+
+    .section-title {
+        font-weight: bold;
+        font-size: 14px;
+        margin-bottom: 8px;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 4px;
+        text-transform: uppercase;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    td {
+        padding: 4px 0;
+        vertical-align: top;
+    }
+
+    .label {
+        width: 38%;
+        font-weight: bold;
+    }
+
+    .value {
+        width: 62%;
+    }
+
+    .total-box {
+        margin-top: 15px;
+        border: 1px solid #000;
+        padding: 10px;
+        background: #f8f8f8;
+    }
+
+    .pagado {
+        text-align: center;
+        font-weight: bold;
+        font-size: 15px;
+        margin-top: 8px;
+        color: #0a7d00;
+    }
+
+    .firma {
+        margin-top: 60px;
+        text-align: center;
+    }
+
+    .firma-line {
+        width: 55%;
+        border-top: 1px solid #000;
+        margin: 0 auto;
+        padding-top: 5px;
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    .footer {
+        margin-top: 30px;
+        font-size: 11px;
+        color: #555;
+        text-align: center;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="empresa">ISHUME Productora Audiovisual</div>
+    <div class="ruc">RUC: 10727174040</div>
+    <div>Av. Luis Massaro 791 – Tel: 991157028</div>
+
+    <div class="documento-box">
+        <div class="documento-titulo">COMPROBANTE DE PAGO</div>
+        <div class="numero">N° 000002</div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="section-title">Información del Pago</div>
+    <table>
+        <tr><td class="label">Número de Pago:</td><td class="value">#2</td></tr>
+        <tr><td class="label">Fecha y Hora:</td><td class="value">05/12/2025 14:15:00</td></tr>
+        <tr><td class="label">Contrato Asociado:</td><td class="value">#1</td></tr>
+        <tr><td class="label">Tipo de Pago:</td><td class="value">Transferencia Bancaria</td></tr>
+        <tr><td class="label">Referencia / N° Operación:</td><td class="value">TXN20240210001</td></tr>
+        <tr><td class="label">Registrado por:</td><td class="value">admin</td></tr>
+    </table>
+</div>
+
+<div class="section">
+    <div class="section-title">Datos del Pagador</div>
+    <table>
+        <tr><td class="label">Documento de Identidad:</td><td class="value">No registrado</td></tr>
+        <tr><td class="label">Nombre Completo:</td><td class="value">No registrado</td></tr>
+    </table>
+</div>
+
+<div class="section">
+    <div class="section-title">Datos del Cliente</div>
+    <table>
+        <tr><td class="label">Cliente:</td><td class="value">Rosa María Quispe Mamani</td></tr>
+        <tr><td class="label">Documento:</td><td class="value">N/A</td></tr>
+        <tr><td class="label">Correo:</td><td class="value">N/A</td></tr>
+        <tr><td class="label">Teléfono:</td><td class="value">N/A</td></tr>
+    </table>
+</div>
+
+<div class="section">
+    <div class="section-title">Detalles del Pago</div>
+    <table>
+        <tr><td class="label">Total del Contrato:</td><td class="value">S/ 8,600.00</td></tr>
+        <tr><td class="label">Saldo Anterior:</td><td class="value">S/ 1,400.00</td></tr>
+        <tr><td class="label">Monto Pagado:</td><td class="value">S/ 1,400.00</td></tr>
+        <tr><td class="label">Nuevo Saldo:</td><td class="value">S/ 0.00</td></tr>
+    </table>
+
+    <div class="pagado">✔ CONTRATO CANCELADO EN SU TOTALIDAD</div>
+</div>
+
+<div class="firma">
+    <div class="firma-line">Firma y Sello Autorizado</div>
+    <div>ISHUME Productora Audiovisual</div>
+</div>
+
+<div class="footer">
+    Documento generado automáticamente el 27/11/2025 09:55:20.  
+    Este comprobante es válido como constancia de pago según normativa civil peruana.
+</div>
+
+</body>
+</html>

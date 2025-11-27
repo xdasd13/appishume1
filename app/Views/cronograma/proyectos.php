@@ -60,17 +60,17 @@
                                     <div class="detail-label">Servicios Contratados</div>
                                     <div class="detail-value">
                                         <?php foreach ($proyecto['servicios'] as $index => $servicio): ?>
-                                            <div class="servicio-item" style="margin-bottom: 8px; padding: 8px; background: #f8f9fa; border-radius: 6px; border-left: 3px solid 
                                             <?php
-                                            if ($servicio['estado'] == 'Completado')
-                                                echo '#10b981';
-                                            elseif ($servicio['estado'] == 'En Proceso')
-                                                echo '#3b82f6';
-                                            elseif ($servicio['estado'] == 'Programado')
-                                                echo '#7c3aed';
-                                            else
-                                                echo '#f59e0b';
-                                            ?>;">
+                                            $mapColors = [
+                                                'Finalizado' => '#10b981',
+                                                'Postproducción' => '#f59e0b',
+                                                'Producción' => '#3b82f6',
+                                                'Planificación' => '#7c3aed'
+                                            ];
+                                            $colorEstado = $mapColors[$servicio['estado']] ?? '#7c3aed';
+                                            ?>
+                                            <div class="servicio-item" style="margin-bottom: 8px; padding: 8px; background: #f8f9fa; border-radius: 6px; border-left: 3px solid <?= $colorEstado ?>;">
+
                                                 <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">
                                                     <div>
                                                         <strong style="color: #2c3e50; font-size: 0.95rem;">
@@ -83,19 +83,10 @@
                                                         </small>
                                                     </div>
                                                     <div style="display:flex; align-items:center; gap:8px;">
-                                                        <span class="badge" style="font-size: 0.7rem; padding: 3px 8px;
-                                                        <?php
-                                                        if ($servicio['estado'] == 'Completado')
-                                                            echo 'background: #10b981;';
-                                                        elseif ($servicio['estado'] == 'En Proceso')
-                                                            echo 'background: #3b82f6;';
-                                                        elseif ($servicio['estado'] == 'Programado')
-                                                            echo 'background: #7c3aed;';
-                                                        else
-                                                            echo 'background: #f59e0b;';
-                                                        ?> color: white;">
+                                                        <span class="badge" style="font-size: 0.7rem; padding: 3px 8px; background: <?= $colorEstado ?>; color: white;">
                                                             <?= esc($servicio['estado']) ?>
                                                         </span>
+
                                                         <a href="<?= base_url('equipos/asignar/' . $servicio['idserviciocontratado']) ?>" class="btn btn-sm btn-outline-primary"
                                                             title="Asignar técnico" style="white-space: nowrap;">
                                                             <i class="fas fa-user-plus"></i>

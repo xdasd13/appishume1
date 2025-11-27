@@ -82,14 +82,14 @@
                                 <td><?= $servicio->direccion ?></td>
                                 <td>
                                     <?php
+                                    $badgeMap = [
+                                        'planificación' => 'badge-planificacion',
+                                        'producción' => 'badge-produccion',
+                                        'postproducción' => 'badge-postproduccion',
+                                        'finalizado' => 'badge-finalizado'
+                                    ];
                                     $estado = strtolower($servicio->estado);
-                                    $badgeClass = 'badge-programado';
-                                    if ($estado == 'en proceso')
-                                        $badgeClass = 'badge-en-proceso';
-                                    elseif ($estado == 'completado')
-                                        $badgeClass = 'badge-completado';
-                                    elseif ($estado == 'pendiente')
-                                        $badgeClass = 'badge-pendiente';
+                                    $badgeClass = $badgeMap[$estado] ?? 'badge-planificacion';
                                     ?>
                                     <span class="badge <?= $badgeClass ?>">
                                         <?= ucfirst($servicio->estado) ?>

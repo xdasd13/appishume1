@@ -37,20 +37,20 @@
 
                         <div class="mb-4">
                             <label for="estadoservicio" class="form-label">
-                                <i class="fas fa-tasks me-2 text-primary"></i>Estado del Servicio
+                                <i class="fas fa-tasks me-2 text-primary"></i>Fase del Servicio
                             </label>
                             <select class="form-select" id="estadoservicio" name="estadoservicio" required>
-                                <option value="Programado" <?= $equipo['estadoservicio'] == 'Programado' ? 'selected' : '' ?>>
-                                    <i class="fas fa-calendar-alt"></i> Programado
+                                <option value="Planificación" <?= $equipo['estadoservicio'] == 'Planificación' ? 'selected' : '' ?>>
+                                    <i class="fas fa-calendar-alt"></i> Planificación
                                 </option>
-                                <option value="En Proceso" <?= $equipo['estadoservicio'] == 'En Proceso' ? 'selected' : '' ?>>
-                                    <i class="fas fa-spinner"></i> En Proceso
+                                <option value="Producción" <?= $equipo['estadoservicio'] == 'Producción' ? 'selected' : '' ?>>
+                                    <i class="fas fa-video"></i> Producción
                                 </option>
-                                <option value="Completado" <?= $equipo['estadoservicio'] == 'Completado' ? 'selected' : '' ?>>
-                                    <i class="fas fa-check-circle"></i> Completado
+                                <option value="Postproducción" <?= $equipo['estadoservicio'] == 'Postproducción' ? 'selected' : '' ?>>
+                                    <i class="fas fa-magic"></i> Postproducción
                                 </option>
-                                <option value="Pendiente" <?= $equipo['estadoservicio'] == 'Pendiente' ? 'selected' : '' ?>>
-                                    <i class="fas fa-clock"></i> Pendiente
+                                <option value="Finalizado" <?= $equipo['estadoservicio'] == 'Finalizado' ? 'selected' : '' ?>>
+                                    <i class="fas fa-check-circle"></i> Finalizado
                                 </option>
                             </select>
                         </div>

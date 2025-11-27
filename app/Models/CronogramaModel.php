@@ -93,11 +93,12 @@ class CronogramaModel extends Model
                         WHEN c.idempresa IS NOT NULL THEN COALESCE(e.telefono, 'Sin teléfono')
                         ELSE COALESCE(p.telefono, 'Sin teléfono')
                     END as telefono,
-                    COALESCE(eq.estadoservicio, 'Pendiente') as estado,
+                    COALESCE(eq.estadoservicio, 'Planificación') as estado,
                     CASE 
-                        WHEN COALESCE(eq.estadoservicio, 'Pendiente') = 'Completado' THEN '#4caf50'
-                        WHEN COALESCE(eq.estadoservicio, 'Pendiente') = 'En Proceso' THEN '#ff9800'
-                        WHEN COALESCE(eq.estadoservicio, 'Pendiente') = 'Programado' THEN '#2196f3'
+                        WHEN COALESCE(eq.estadoservicio, 'Planificación') = 'Finalizado' THEN '#4caf50'
+                        WHEN COALESCE(eq.estadoservicio, 'Planificación') = 'Postproducción' THEN '#ff9800'
+                        WHEN COALESCE(eq.estadoservicio, 'Planificación') = 'Producción' THEN '#2196f3'
+                        WHEN COALESCE(eq.estadoservicio, 'Planificación') = 'Vencido' THEN '#f44336'
                         ELSE '#757575'
                     END as color
                 FROM servicioscontratados sc
@@ -126,7 +127,7 @@ class CronogramaModel extends Model
                         sc.fechahoraservicio as start,
                         COALESCE(sc.direccion, 'Sin dirección') as direccion,
                         'Sin teléfono' as telefono,
-                        'Pendiente' as estado,
+                        'Planificación' as estado,
                         '#2196f3' as color
                     FROM servicioscontratados sc
                     WHERE 1=1 $whereClause
@@ -178,7 +179,7 @@ class CronogramaModel extends Model
                         'extendedProps' => [
                             'direccion' => $evento->direccion ?? 'Sin dirección',
                             'telefono' => 'Sin teléfono',
-                            'estado' => 'Pendiente'
+                            'estado' => 'Planificación'
                         ]
                     ];
                 }
@@ -209,7 +210,7 @@ class CronogramaModel extends Model
                         WHEN c.idempresa IS NOT NULL THEN e.razonsocial
                         ELSE CONCAT(p.nombres, ' ', p.apellidos)
                     END as cliente,
-                    COALESCE(eq.estadoservicio, 'Pendiente') as estado
+                    COALESCE(eq.estadoservicio, 'Planificación') as estado
                 FROM servicioscontratados sc
                 INNER JOIN cotizaciones cot ON sc.idcotizacion = cot.idcotizacion
                 INNER JOIN contratos con ON cot.idcotizacion = con.idcotizacion
@@ -220,7 +221,7 @@ class CronogramaModel extends Model
                 LEFT JOIN equipos eq ON sc.idserviciocontratado = eq.idserviciocontratado
                 WHERE sc.fechahoraservicio >= NOW()
                 AND sc.fechahoraservicio <= DATE_ADD(NOW(), INTERVAL 14 DAY)
-                AND COALESCE(eq.estadoservicio, 'Pendiente') != 'Completado'
+                AND COALESCE(eq.estadoservicio, 'Planificación') NOT IN ('Finalizado', 'Vencido')
                 ORDER BY sc.fechahoraservicio ASC
                 LIMIT $limite
             ";
@@ -249,7 +250,7 @@ class CronogramaModel extends Model
                         WHEN c.idempresa IS NOT NULL THEN e.razonsocial
                         ELSE CONCAT(p.nombres, ' ', p.apellidos)
                     END as cliente,
-                    COALESCE(eq.estadoservicio, 'Pendiente') as estado,
+                    COALESCE(eq.estadoservicio, 'Planificación') as estado,
                     CASE 
                         WHEN c.idempresa IS NOT NULL THEN e.telefono
                         ELSE p.telefono
@@ -284,10 +285,11 @@ class CronogramaModel extends Model
                 SELECT 
                     DATE(sc.fechahoraservicio) as fecha,
                     COUNT(*) as total_servicios,
-                    SUM(CASE WHEN COALESCE(eq.estadoservicio, 'Pendiente') = 'Completado' THEN 1 ELSE 0 END) as completados,
-                    SUM(CASE WHEN COALESCE(eq.estadoservicio, 'Pendiente') = 'En Proceso' THEN 1 ELSE 0 END) as en_proceso,
-                    SUM(CASE WHEN COALESCE(eq.estadoservicio, 'Pendiente') = 'Programado' THEN 1 ELSE 0 END) as programados,
-                    SUM(CASE WHEN COALESCE(eq.estadoservicio, 'Pendiente') = 'Pendiente' THEN 1 ELSE 0 END) as pendientes
+                    SUM(CASE WHEN COALESCE(eq.estadoservicio, 'Planificación') = 'Finalizado' THEN 1 ELSE 0 END) as finalizados,
+                    SUM(CASE WHEN COALESCE(eq.estadoservicio, 'Planificación') = 'Postproducción' THEN 1 ELSE 0 END) as postproduccion,
+                    SUM(CASE WHEN COALESCE(eq.estadoservicio, 'Planificación') = 'Producción' THEN 1 ELSE 0 END) as produccion,
+                    SUM(CASE WHEN COALESCE(eq.estadoservicio, 'Planificación') = 'Planificación' THEN 1 ELSE 0 END) as planificacion,
+                    SUM(CASE WHEN COALESCE(eq.estadoservicio, 'Planificación') = 'Vencido' THEN 1 ELSE 0 END) as vencidos
                 FROM servicioscontratados sc
                 LEFT JOIN equipos eq ON sc.idserviciocontratado = eq.idserviciocontratado
                 WHERE sc.fechahoraservicio >= DATE_SUB(NOW(), INTERVAL 7 DAY)

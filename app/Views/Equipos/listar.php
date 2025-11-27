@@ -14,26 +14,27 @@
                 </h2>
 
                 <!-- Estadísticas rápidas -->
-                <?php if (isset($estadisticas)): ?>
-                    <div class="d-flex gap-2">
-                        <div class="badge fs-6 px-3 py-2" style="background-color: #7c3aed; color: white; font-family: 'Poppins', sans-serif; font-weight: 600;">
-                            <i class="fas fa-calendar-alt me-1"></i>
-                            Programados: <?= $estadisticas['Programado'] ?? 0 ?>
+                <?php
+                $fasesTablero = ['Planificación', 'Producción', 'Postproducción', 'Finalizado'];
+                $estadisticas = $estadisticas ?? [];
+                ?>
+                <div class="d-flex gap-2">
+                    <?php foreach ($fasesTablero as $fase): ?>
+                        <?php
+                        $configFase = [
+                            'Planificación' => ['color' => '#7c3aed', 'icono' => 'fas fa-calendar-alt'],
+                            'Producción' => ['color' => '#3b82f6', 'icono' => 'fas fa-video'],
+                            'Postproducción' => ['color' => '#f59e0b', 'icono' => 'fas fa-magic'],
+                            'Finalizado' => ['color' => '#10b981', 'icono' => 'fas fa-check-circle']
+                        ];
+                        $config = $configFase[$fase];
+                        ?>
+                        <div class="badge fs-6 px-3 py-2" style="background-color: <?= $config['color'] ?>; color: white; font-family: 'Poppins', sans-serif; font-weight: 600;">
+                            <i class="<?= $config['icono'] ?> me-1"></i>
+                            <?= $fase ?>: <?= $estadisticas[$fase] ?? 0 ?>
                         </div>
-                        <div class="badge fs-6 px-3 py-2" style="background-color: #f59e0b; color: white; font-family: 'Poppins', sans-serif; font-weight: 600;">
-                            <i class="fas fa-clock me-1"></i>
-                            Pendientes: <?= $estadisticas['Pendiente'] ?? 0 ?>
-                        </div>
-                        <div class="badge fs-6 px-3 py-2" style="background-color: #3b82f6; color: white; font-family: 'Poppins', sans-serif; font-weight: 600;">
-                            <i class="fas fa-spinner me-1"></i>
-                            En Proceso: <?= $estadisticas['En Proceso'] ?? 0 ?>
-                        </div>
-                        <div class="badge fs-6 px-3 py-2" style="background-color: #10b981; color: white; font-family: 'Poppins', sans-serif; font-weight: 600;">
-                            <i class="fas fa-check-circle me-1"></i>
-                            Completados: <?= $estadisticas['Completado'] ?? 0 ?>
-                        </div>
-                    </div>
-                <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
             </div>
         </div>
     </div>
@@ -242,12 +243,13 @@
 
             <?php
             // Usar datos agrupados del modelo o crear estructura por defecto
-            $equiposKanban = $equiposKanban ?? [
-                'Programado' => [],
-                'Pendiente' => [],
-                'En Proceso' => [],
-                'Completado' => []
-            ];
+            $fasesTablero = ['Planificación', 'Producción', 'Postproducción', 'Finalizado'];
+            $equiposKanban = $equiposKanban ?? [];
+            foreach ($fasesTablero as $fase) {
+                if (!array_key_exists($fase, $equiposKanban)) {
+                    $equiposKanban[$fase] = [];
+                }
+            }
             ?>
 
             <?php if (!empty(array_filter($equiposKanban))): ?>
@@ -255,12 +257,12 @@
                 <div class="kanban-board">
                     <div class="row g-4">
                         <?php
-                        // Configuración de columnas KISS - 4 estados
+                        // Configuración de columnas KISS - 4 fases
                         $columnas = [
-                            'Programado' => ['color' => '#7c3aed', 'icono' => 'fas fa-calendar-alt'],
-                            'Pendiente' => ['color' => '#f59e0b', 'icono' => 'fas fa-clock'],
-                            'En Proceso' => ['color' => '#3b82f6', 'icono' => 'fas fa-spinner'],
-                            'Completado' => ['color' => '#10b981', 'icono' => 'fas fa-check-circle']
+                            'Planificación' => ['color' => '#7c3aed', 'icono' => 'fas fa-calendar-alt'],
+                            'Producción' => ['color' => '#3b82f6', 'icono' => 'fas fa-video'],
+                            'Postproducción' => ['color' => '#f59e0b', 'icono' => 'fas fa-magic'],
+                            'Finalizado' => ['color' => '#10b981', 'icono' => 'fas fa-check-circle']
                         ];
                         ?>
 
