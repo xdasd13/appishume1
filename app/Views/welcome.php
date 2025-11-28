@@ -60,6 +60,19 @@ $eficienciaEntrega = ($totalEntregasCount > 0)
 
 // Datos para gráficos
 $equiposEnUso = $totalEquipos - $equiposDisponibles;
+
+// Entregas pendientes para mostrar en tablero (ordenadas por fecha de compromiso)
+$entregasPendientesList = array_filter($todasEntregas, static function ($entrega) {
+    return ($entrega['estado'] ?? '') === 'pendiente';
+});
+
+usort($entregasPendientesList, static function ($a, $b) {
+    $fechaA = strtotime($a['fechahoraentrega'] ?? '9999-12-31');
+    $fechaB = strtotime($b['fechahoraentrega'] ?? '9999-12-31');
+    return $fechaA <=> $fechaB;
+});
+
+$entregasPendientesTop = array_slice($entregasPendientesList, 0, 5);
 ?>
 
 <!-- Estilos Específicos del Dashboard -->
@@ -343,7 +356,6 @@ $equiposEnUso = $totalEquipos - $equiposDisponibles;
             <div class="stat-text">
                 <h6>Equipos Disponibles</h6>
                 <div class="value text-success"><?= $equiposDisponibles ?></div>
-                <small class="text-muted">Utilización: <?= number_format($utilizacionInventario, 1) ?>%</small>
             </div>
             <div class="stat-icon text-success">
                 <i class="fas fa-camera"></i>
@@ -405,42 +417,61 @@ $equiposEnUso = $totalEquipos - $equiposDisponibles;
             </div>
         </div>
 
-        <!-- Tabla Derecha: Top Deudores -->
+        <!-- Tabla Derecha: Entregas Pendientes -->
         <div class="content-card">
             <div class="card-header">
-                <h5 class="text-danger"><i class="fas fa-exclamation-circle"></i> Top Deudores</h5>
+                <h5 class="text-warning"><i class="fas fa-box"></i> Entregas Pendientes</h5>
+                <a href="<?= base_url('entregas/historial') ?>" class="btn btn-sm btn-outline-warning">Ver historial</a>
             </div>
             <div class="card-body p-0">
                 <table class="table-modern">
                     <thead>
                         <tr>
                             <th>Cliente</th>
-                            <th>Deuda</th>
-                            <th>Acción</th>
+                            <th>Servicio</th>
+                            <th>Entrega</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (!empty($contratosDeuda)): ?>
-                            <?php foreach (array_slice($contratosDeuda, 0, 5) as $contrato): ?>
+                        <?php if (!empty($entregasPendientesTop)): ?>
+                            <?php foreach ($entregasPendientesTop as $pendiente): ?>
                                 <tr>
                                     <td>
-                                        <?= esc($contrato['nombres'] ?? $contrato['razonsocial']) ?>
-                                        <br><small class="text-muted">Contrato #<?= $contrato['idcontrato'] ?></small>
-                                    </td>
-                                    <td class="text-danger font-weight-bold">
-                                        S/ <?= number_format($contrato['saldo_actual'], 2) ?>
+                                        <?= esc(trim(($pendiente['nombre_cliente'] ?? '') . ' ' . ($pendiente['apellido_cliente'] ?? ''))) ?>
+                                        <br><small class="text-muted">Contrato #<?= esc($pendiente['idcontrato'] ?? 'N/D') ?></small>
                                     </td>
                                     <td>
-                                        <a href="<?= base_url('controlpagos/ver/' . $contrato['idcontrato']) ?>"
-                                            class="btn btn-sm btn-outline-danger" title="Cobrar">
-                                            <i class="fas fa-dollar-sign"></i>
+                                        <?= esc($pendiente['servicio'] ?? 'Servicio no definido') ?>
+                                        <br><small class="text-muted">ID SC: <?= esc($pendiente['idserviciocontratado'] ?? 'N/D') ?></small>
+                                    </td>
+                                    <td>
+                                        <?php $fechaEntrega = $pendiente['fechahoraentrega'] ?? null; ?>
+                                        <span class="status-badge bg-warning-light">
+                                            <?= $fechaEntrega ? date('d/m/Y H:i', strtotime($fechaEntrega)) : 'Sin fecha' ?>
+                                        </span>
+                                        <?php
+                                            $diasRetraso = $fechaEntrega ? floor((time() - strtotime($fechaEntrega)) / 86400) : null;
+                                            if ($diasRetraso !== null && $diasRetraso > 0):
+                                        ?>
+                                            <br><small class="text-danger fw-bold">Atraso: <?= $diasRetraso ?> días</small>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td class="d-flex gap-2">
+                                        <a href="<?= base_url('entregas/editar/' . ($pendiente['identregable'] ?? 0)) ?>"
+                                            class="btn btn-sm btn-outline-warning" title="Registrar entrega">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="<?= base_url('entregas/ver/' . ($pendiente['identregable'] ?? 0)) ?>"
+                                            class="btn btn-sm btn-outline-secondary" title="Ver detalle">
+                                            <i class="fas fa-eye"></i>
                                         </a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="3" class="text-center p-3">¡Todo al día! 🎉</td>
+                                <td colspan="4" class="text-center p-3">No hay entregas pendientes</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>
