@@ -451,8 +451,8 @@ class ReportesController extends BaseController
                 ELSE CONCAT(p.nombres, " ", p.apellidos)
             END as cliente,
             CASE 
-                WHEN cl.idempresa IS NOT NULL THEN "Empresa"
-                ELSE "Persona Natural"
+                WHEN cl.idempresa IS NOT NULL THEN \'Empresa\'
+                ELSE \'Persona Natural\'
             END as tipo_cliente,
             COALESCE(e.ruc, p.numerodoc) as documento,
             COALESCE(e.telefono, p.telprincipal) as telefono,

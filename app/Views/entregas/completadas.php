@@ -93,13 +93,8 @@
                       </div>
                     </td>
                     <td>
-                      <div class="d-flex align-items-center">
-                        <div class="avatar avatar-sm bg-primary text-white rounded-circle mr-2">
-                          <?= substr($e['nombre_entrega'], 0, 1) ?>
-                        </div>
-                        <div>
-                          <?= $e['nombre_entrega'] ?> <?= $e['apellido_entrega'] ?>
-                        </div>
+                      <div>
+                        <?= $e['nombre_entrega'] ?> <?= $e['apellido_entrega'] ?>
                       </div>
                     </td>
                     <td>
