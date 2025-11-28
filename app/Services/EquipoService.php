@@ -173,12 +173,12 @@ class EquipoService
      */
     public function obtenerEstadisticas(?int $usuarioId = null): array
     {
-        // Flujo: Programado → Pendiente → En Proceso → Completado
+        // Flujo actual del tablero: Planificación → Producción → Postproducción → Finalizado
         $estadisticas = [
-            'Programado' => 0,
-            'Pendiente' => 0,
-            'En Proceso' => 0,
-            'Completado' => 0
+            'Planificación' => 0,
+            'Producción' => 0,
+            'Postproducción' => 0,
+            'Finalizado' => 0
         ];
 
         // Si se filtra por usuario específico (trabajador), solo contar equipos asignados
@@ -198,45 +198,28 @@ class EquipoService
             }
         } else {
             // Vista general: contar TODOS los servicios contratados (con y sin asignación)
-            // IMPORTANTE: Usar DISTINCT o subconsulta para evitar duplicados cuando un servicio tiene múltiples equipos
-            // Solo mostrar servicios del año actual (2025) y que no estén vencidos
-            // Similar a como lo hace ProyectoModel, pero corrigiendo duplicados
-            $query = "
-                SELECT 
-                    COALESCE(
-                        (SELECT e.estadoservicio 
-                         FROM equipos e 
-                         WHERE e.idserviciocontratado = sc.idserviciocontratado 
-                           AND e.estadoservicio != 'Vencido'
-                         ORDER BY e.idequipo DESC 
-                         LIMIT 1), 
-                        'Pendiente'
-                    ) as estado,
-                    COUNT(DISTINCT sc.idserviciocontratado) as total
-                FROM servicioscontratados sc
-                WHERE COALESCE(
-                    (SELECT e.estadoservicio 
-                     FROM equipos e 
-                     WHERE e.idserviciocontratado = sc.idserviciocontratado 
-                       AND e.estadoservicio != 'Vencido'
-                     ORDER BY e.idequipo DESC 
-                     LIMIT 1), 
-                    'Pendiente'
-                ) != 'Vencido'
-                  AND YEAR(sc.fechahoraservicio) = YEAR(CURDATE())
-                  AND sc.fechahoraservicio >= CURDATE()
-                GROUP BY COALESCE(
-                    (SELECT e.estadoservicio 
-                     FROM equipos e 
-                     WHERE e.idserviciocontratado = sc.idserviciocontratado 
-                       AND e.estadoservicio != 'Vencido'
-                     ORDER BY e.idequipo DESC 
-                     LIMIT 1), 
-                    'Pendiente'
-                )
+            // Para evitar duplicados y reflejar el estado más reciente, se genera una subconsulta
+            $sql = "
+                SELECT estado, COUNT(*) AS total
+                FROM (
+                    SELECT 
+                        COALESCE(
+                            (SELECT e.estadoservicio 
+                             FROM equipos e 
+                             WHERE e.idserviciocontratado = sc.idserviciocontratado 
+                               AND e.estadoservicio != 'Vencido'
+                             ORDER BY e.idequipo DESC 
+                             LIMIT 1), 
+                            'Planificación'
+                        ) AS estado
+                    FROM servicioscontratados sc
+                    WHERE YEAR(sc.fechahoraservicio) = YEAR(CURDATE())
+                      AND sc.fechahoraservicio >= CURDATE()
+                ) estados
+                GROUP BY estado
             ";
-            
-            $resultados = $this->db->query($query)->getResultArray();
+
+            $resultados = $this->db->query($sql)->getResultArray();
 
             foreach ($resultados as $resultado) {
                 $estado = $resultado['estado'];

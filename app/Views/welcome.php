@@ -450,81 +450,9 @@ $equiposEnUso = $totalEquipos - $equiposDisponibles;
     </div>
 
     <!-- 4. Gráficos -->
-    <div class="charts-grid">
-        <div class="content-card">
-            <div class="card-header">
-                <h5>Resumen Financiero</h5>
-            </div>
-            <div class="card-body">
-                <canvas id="financeChart"></canvas>
-            </div>
-        </div>
-        <div class="content-card">
-            <div class="card-header">
-                <h5>Estado del Inventario</h5>
-            </div>
-            <div class="card-body">
-                <canvas id="inventoryChart"></canvas>
-            </div>
-        </div>
-    </div>
+    
 
-</div>
 
-<!-- Scripts para Gráficos -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    // Gráfico de Inventario
-    const ctxInv = document.getElementById('inventoryChart').getContext('2d');
-    new Chart(ctxInv, {
-        type: 'doughnut',
-        data: {
-            labels: ['Disponible', 'En Uso', 'Mantenimiento'],
-            datasets: [{
-                data: [
-                    <?= $equiposDisponibles ?>,
-                    <?= $equiposEnUso ?>,
-                    0 // Ajustar si hay dato de mantenimiento
-                ],
-                backgroundColor: ['#1cc88a', '#4e73df', '#e74a3b'],
-                borderWidth: 0
-            }]
-        },
-        options: {
-            cutout: '70%',
-            plugins: {
-                legend: { position: 'bottom' }
-            }
-        }
-    });
-
-    // Gráfico Financiero (Simulado con datos reales acumulados)
-    const ctxFin = document.getElementById('financeChart').getContext('2d');
-    new Chart(ctxFin, {
-        type: 'bar',
-        data: {
-            labels: ['Total'],
-            datasets: [
-                {
-                    label: 'Pagado',
-                    data: [<?= $statsPagos['total_pagado'] ?>],
-                    backgroundColor: '#1cc88a'
-                },
-                {
-                    label: 'Por Cobrar',
-                    data: [<?= $deudaTotal ?>],
-                    backgroundColor: '#e74a3b'
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: { beginAtZero: true }
-            }
-        }
-    });
-</script>
 
 <!-- SweetAlert Logic (Mantener lo existente) -->
 <script>
