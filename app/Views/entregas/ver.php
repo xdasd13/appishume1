@@ -114,18 +114,13 @@
                                     <tr>
                                         <th class="bg-light" width="25%">Responsable</th>
                                         <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar avatar-sm bg-primary text-white rounded-circle mr-2">
-                                                    <?= isset($entrega['nombre_entrega']) && !empty($entrega['nombre_entrega']) && $entrega['nombre_entrega'] !== 'Sin nombre' ? substr($entrega['nombre_entrega'], 0, 1) : '?' ?>
-                                                </div>
-                                                <div>
-                                                    <?= isset($entrega['nombre_entrega']) && !empty($entrega['nombre_entrega']) && $entrega['nombre_entrega'] !== 'Sin nombre' ? 
-                                                        $entrega['nombre_entrega'] . ' ' . $entrega['apellido_entrega'] : 
-                                                        session()->get('usuario_nombre') ?? 'No disponible' ?>
-                                                    <div class="text-muted small">
-                                                        <?= isset($entrega['numerodoc_entrega']) && !empty($entrega['numerodoc_entrega']) && $entrega['numerodoc_entrega'] !== 'No disponible' ? 
-                                                            'DNI: ' . $entrega['numerodoc_entrega'] : '' ?>
-                                                    </div>
+                                            <div>
+                                                <?= isset($entrega['nombre_entrega']) && !empty($entrega['nombre_entrega']) && $entrega['nombre_entrega'] !== 'Sin nombre' ? 
+                                                    $entrega['nombre_entrega'] . ' ' . $entrega['apellido_entrega'] : 
+                                                    session()->get('usuario_nombre') ?? 'No disponible' ?>
+                                                <div class="text-muted small">
+                                                    <?= isset($entrega['numerodoc_entrega']) && !empty($entrega['numerodoc_entrega']) && $entrega['numerodoc_entrega'] !== 'No disponible' ? 
+                                                        'DNI: ' . $entrega['numerodoc_entrega'] : '' ?>
                                                 </div>
                                             </div>
                                         </td>

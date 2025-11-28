@@ -109,12 +109,6 @@
                         </select>
                     </div>
 
-                    <!-- Descripción del reporte seleccionado -->
-                    <div id="descripcion-reporte" class="alert alert-info animate-fade-in">
-                        <i class="fas fa-info-circle mr-2"></i>
-                        <span id="texto-descripcion"></span>
-                    </div>
-
                     <!-- Filtros dinámicos -->
                     <div id="panel-filtros">
                         <h5 class="mb-3">
@@ -264,21 +258,9 @@ $(document).ready(function() {
             
             console.log('Reporte encontrado:', reporte);
             
-            // Verificar que el reporte existe y tiene descripción
-            if (reporte && reporte.descripcion) {
-                // Mostrar descripción
-                $('#texto-descripcion').text(reporte.descripcion);
-                $('#descripcion-reporte').show();
-                
-                // Agregar animación a la descripción
-                setTimeout(() => {
-                    $('#descripcion-reporte').removeClass('animate-fade-in').addClass('animate-fade-in');
-                }, 50);
-                
-                console.log('Descripción mostrada:', reporte.descripcion);
-            } else {
-                console.error('Reporte no encontrado o sin descripción:', tipoReporte, reporte);
-                $('#descripcion-reporte').hide();
+            // Verificar que el reporte existe
+            if (!reporte) {
+                console.error('Reporte no encontrado:', tipoReporte);
             }
             
             // Generar filtros dinámicos
@@ -689,13 +671,11 @@ $(document).ready(function() {
     }
 
     function limpiarTodo() {
-        $('#descripcion-reporte').hide();
         $('#panel-filtros').hide();
         $('#panel-exportacion').hide();
         $('#contenido-reporte').hide();
         $('#estado-inicial').show();
         $('#filtros-activos').text('0');
-        $('#texto-descripcion').text('');
         reporteActual = null;
         filtrosActuales = {};
         console.log('Todo limpiado');
